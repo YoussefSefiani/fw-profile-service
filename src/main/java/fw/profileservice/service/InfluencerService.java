@@ -84,14 +84,17 @@ public class InfluencerService {
     }
 
     public void registerInfluencer(RegisterRequest registerRequest) {
-//        Optional<Influencer> influencerOptional = influencerRepository.findInfluencerByUsername(influencer.getUser().getUsername());
-//
-//        if (influencerOptional.isPresent())
-//            influencerRepository.save(influencer);
+        try {
+            System.out.println(registerRequest.getUserId());
+            Influencer influencer = new Influencer(
+                    (Long) null,
+                    registerRequest.getUserId()
+            );
+            influencerRepository.save(influencer);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
 
-       // if (userService.checkUsername(influencer.getUser()))
-
-       // influencerRepository.save(influencer);
 
     }
 

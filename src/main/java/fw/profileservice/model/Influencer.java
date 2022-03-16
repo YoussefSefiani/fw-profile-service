@@ -14,6 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 public class Influencer {
 
+    public Influencer(Long id, Long userId) {
+        this.id = id;
+        this.userId = userId;
+    }
+
     @Id
     @GeneratedValue(
             strategy = GenerationType.AUTO
@@ -48,7 +53,7 @@ public class Influencer {
 
     private String partnerships;
 
-    public Influencer(RegisterRequest o, Long userId) {
+    public Influencer(RegisterRequest registerRequest, Long userId) {
     }
 
 //    public User getUser() {
