@@ -31,12 +31,6 @@ public class InfluencerController {
         return influencerService.getInfluencer(influencerId);
     }
 
-    @PostMapping(path = "dummy")
-    public void registerDummyInfluencer(@RequestBody RegisterRequest registerRequest) {
-        System.out.println("in registerDummyInfluencer function controller");
-        influencerService.registerDummyInfluencer(registerRequest);
-    }
-
     @PostMapping
     public void registerInfluencer(@RequestBody RegisterRequest registerRequest) {
         System.out.println("in registerInfluencer function controller");

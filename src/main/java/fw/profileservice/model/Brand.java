@@ -46,8 +46,4 @@ public class Brand {
 
     private String partnerships;
 
-//    public User getUser() {
-//        return user;
-//    }
-
 }
