@@ -19,7 +19,6 @@ public class BrandService {
 
     public void registerBrand(Brand brand) {
 
-
         System.out.println("in brand register method");
 //        if(userService.checkUsername(brand.getUser()))
          //brandRepository.save(brand);
