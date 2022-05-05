@@ -3,16 +3,14 @@ package fw.profileservice.controller;
 import fw.profileservice.model.*;
 import fw.profileservice.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/brand")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class BrandController {
 
     private final BrandService brandService;

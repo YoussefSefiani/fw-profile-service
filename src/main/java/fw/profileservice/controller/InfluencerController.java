@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/influencer")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class InfluencerController {
 
     private final InfluencerService influencerService;
