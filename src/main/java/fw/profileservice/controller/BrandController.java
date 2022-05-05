@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/brand")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BrandController {
 
     private final BrandService brandService;
