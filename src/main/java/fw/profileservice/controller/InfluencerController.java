@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(path = "api/influencer")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class InfluencerController {
 
     private final InfluencerService influencerService;

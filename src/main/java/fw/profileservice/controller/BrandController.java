@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(path = "api/brand")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BrandController {
 
     private final BrandService brandService;
