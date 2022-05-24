@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(path = "api/influencer")
 public class InfluencerController {
@@ -33,7 +32,6 @@ public class InfluencerController {
 
     @PostMapping
     public void registerInfluencer(@RequestBody RegisterRequest registerRequest) {
-        System.out.println("in registerInfluencer function controller");
         influencerService.registerInfluencer(registerRequest);
     }
 

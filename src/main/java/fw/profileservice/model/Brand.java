@@ -14,6 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 public class Brand {
 
+    public Brand(Long id, Long userId) {
+        this.id = id;
+        this.userId = userId;
+    }
+
     @Id
     @GeneratedValue(
             strategy = GenerationType.AUTO
@@ -42,8 +47,7 @@ public class Brand {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Sector> sectors;
 
-    private String offers;
-
-    private String partnerships;
+    public Brand(RegisterRequest registerRequest, Long userId) {
+    }
 
 }

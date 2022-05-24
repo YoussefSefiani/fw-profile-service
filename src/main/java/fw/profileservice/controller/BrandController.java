@@ -5,10 +5,8 @@ import fw.profileservice.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(path = "api/brand")
 public class BrandController {
@@ -20,60 +18,29 @@ public class BrandController {
         this.brandService = brandService;
     }
 
+    @GetMapping
+    public List<Brand> getBrands() {
+        return brandService.getBrands();
+    }
+
+    @GetMapping(path = "{brandId}")
+    public Brand getBrand(@PathVariable("brandId") Long brandId) {
+        return brandService.getBrand(brandId);
+    }
 
     @PostMapping
-    public void registerBrand(@RequestBody Brand brand) {
-        System.out.println("in registerBrand function");
+    public void registerBrand(@RequestBody RegisterRequest registerRequest) {
+        brandService.registerBrand(registerRequest);
+    }
 
-        LocalDate dummyDate = LocalDate.of(2000,02,04);
+    @DeleteMapping(path = "{brandId}")
+    public void deleteBrand(@PathVariable("brandId") Long brandId) {
+        brandService.deleteBrand(brandId);
+    }
 
-        List<SocialMedia> dummySocialMedia = List.of(
-                new SocialMedia(null, SocialMediaList.SNAPCHAT.name(), "linkbrand"),
-                new SocialMedia(null, SocialMediaList.INSTAGRAM.name(), "linkbrand2")
-        );
-
-        List<String> dummyLanguages = List.of(
-                LanguageList.DUTCH.name(), LanguageList.ENGLISH.name()
-        );
-
-        List<String> dummyCountries = List.of(
-                CountryList.FRANCE.name(), CountryList.BELGIUM.name()
-        );
-
-        List<String> dummySector = List.of(
-                SectorList.IT.name(), SectorList.FINANCE.name()
-        );
-
-//        User dummyUser = new User(
-//                null,
-//                "Youssefbrand",
-//                "Sefianibrand",
-//                "testbrand",
-//                "pass",
-//                "ayoub@hotmail.com",
-//                32489245740L,
-//                "teststreetbrand",
-//                dummyDate,
-//                "profilepicture",
-//                5,
-//                UserType.BRAND
-//
-//        );
-
-//        Brand dummyBrand = new Brand(
-//                null,
-//                dummyUser,
-//                dummySocialMedia,
-//                "I am a brand",
-//                "this is the description brand",
-//                dummyLanguages,
-//                dummyCountries,
-//                dummySector,
-//                "here offers brand",
-//                "here partnerships brand"
-//        );
-
-       // brandService.registerBrand(dummyBrand);
+    @PutMapping(path = "{brandId}")
+    public void updateBrand(@PathVariable("brandId") Long brandId, @RequestBody Brand brand) {
+       brandService.updateBrand(brandId, brand);
     }
 }
 

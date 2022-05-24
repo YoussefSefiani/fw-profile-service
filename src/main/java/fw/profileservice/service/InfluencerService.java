@@ -3,20 +3,17 @@ package fw.profileservice.service;
 
 import fw.profileservice.model.*;
 import fw.profileservice.repository.InfluencerRepository;
-import org.hibernate.usertype.UserType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class InfluencerService {
 
     private final InfluencerRepository influencerRepository;
-
 
     @Autowired
     public InfluencerService(InfluencerRepository influencerRepository) {

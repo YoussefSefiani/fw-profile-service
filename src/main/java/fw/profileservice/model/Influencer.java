@@ -49,14 +49,14 @@ public class Influencer {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Sector> sectors;
 
-    private String offers;
+    private int storyPrice;
+    private int postPrice;
+    private int highlightPrice;
 
-    private String partnerships;
+    private String Address;
+    private String City;
+    private int postalCode;
 
     public Influencer(RegisterRequest registerRequest, Long userId) {
     }
-
-//    public User getUser() {
-//        return user;
-//    }
 }
