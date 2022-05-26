@@ -53,10 +53,26 @@ public class Influencer {
     private int postPrice;
     private int highlightPrice;
 
-    private String Address;
-    private String City;
+    private String address;
+    private String city;
     private int postalCode;
 
     public Influencer(RegisterRequest registerRequest, Long userId) {
+    }
+
+    public Influencer(String ibanNumber, List<SocialMedia> socialMedia, String headTitle, String description, List<Language> languages, List<Country> countries, List<Sector> sectors, int storyPrice, int postPrice, int highlightPrice, String address, String city, int postalCode) {
+        this.ibanNumber = ibanNumber;
+        this.socialMedia = socialMedia;
+        this.headTitle = headTitle;
+        this.description = description;
+        this.languages = languages;
+        this.countries = countries;
+        this.sectors = sectors;
+        this.storyPrice = storyPrice;
+        this.postPrice = postPrice;
+        this.highlightPrice = highlightPrice;
+        this.address = address;
+        this.city = city;
+        this.postalCode = postalCode;
     }
 }

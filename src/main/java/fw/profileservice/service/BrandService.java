@@ -5,7 +5,9 @@ import fw.profileservice.model.Influencer;
 import fw.profileservice.model.RegisterRequest;
 import fw.profileservice.repository.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -27,13 +29,12 @@ public class BrandService {
     public Brand getBrand(Long brandId) {
 
         return brandRepository.findById(brandId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "brand with id " + brandId + " does not exist"
-                ));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Brand with id %s does not exist", brandId))
+                );
     }
 
     public void registerBrand(RegisterRequest registerRequest) {
-        System.out.println("USER ID " + registerRequest.getUserId());
         try {
             System.out.println("USER ID " + registerRequest.getUserId());
             Brand brand = new Brand(
@@ -42,7 +43,7 @@ public class BrandService {
             );
             brandRepository.save(brand);
         } catch (Exception e) {
-            throw new IllegalArgumentException(e);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Error during register request" );
         }
     }
 
@@ -50,7 +51,9 @@ public class BrandService {
         boolean exists = brandRepository.existsById(brandId);
 
         if (!exists) {
-            throw new IllegalStateException("brand with id " + brandId + " does not exists");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    String.format("Brand with id %s does not exist", brandId));
         }
         brandRepository.deleteById(brandId);
     }

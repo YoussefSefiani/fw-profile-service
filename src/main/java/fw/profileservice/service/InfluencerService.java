@@ -5,7 +5,9 @@ import fw.profileservice.model.*;
 import fw.profileservice.repository.InfluencerRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -27,13 +29,12 @@ public class InfluencerService {
     public Influencer getInfluencer(Long influencerId) {
 
         return influencerRepository.findById(influencerId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "influencer with id " + influencerId + " does not exist"
-                ));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Influencer with id %s does not exist", influencerId))
+                );
     }
 
     public void registerInfluencer(RegisterRequest registerRequest) {
-        System.out.println("USER ID " + registerRequest.getUserId());
         try {
             System.out.println("USER ID " + registerRequest.getUserId());
             Influencer influencer = new Influencer(
@@ -42,7 +43,7 @@ public class InfluencerService {
             );
             influencerRepository.save(influencer);
         } catch (Exception e) {
-            throw new IllegalArgumentException(e);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Error during register request" );
         }
     }
 
@@ -50,7 +51,9 @@ public class InfluencerService {
         boolean exists = influencerRepository.existsById(influencerId);
 
         if (!exists) {
-            throw new IllegalStateException("influencer with id " + influencerId + " does not exists");
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    String.format("Influencer with id %s does not exist", influencerId));
         }
         influencerRepository.deleteById(influencerId);
     }
@@ -58,9 +61,10 @@ public class InfluencerService {
     @Transactional
     public void updateInfluencer(Long influencerId, Influencer newInfluencer) {
         Influencer influencer = influencerRepository.findById(influencerId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "influencer with id " + influencerId + "does not exist"
-                ));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("Influencer with id %s does not exist", influencerId))
+                );
 
 //        String description = newInfluencer.getDescription();
 //        String headTitle = newInfluencer.getHeadTitle();
@@ -82,8 +86,36 @@ public class InfluencerService {
 //
 //        if (partnerships != null && partnerships.length() > 0 && !Objects.equals(influencer.getPartnerships(), partnerships))
 //            influencer.setDescription(description);
-
-
     }
 
+    public boolean checkFirstTimeOnProfile(Long userId) {
+        Influencer influencer = influencerRepository.findInfluencerByUserId(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Influencer with id %s does not exist", userId))
+                );
+        return influencer.getIbanNumber() == null;
+    }
+
+    public void confirmProfile(Long userId, Influencer influencerProfileData) {
+        Influencer influencer = influencerRepository.findInfluencerByUserId(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Influencer with id %s does not exist", userId))
+                );
+
+        influencer.setIbanNumber(influencerProfileData.getIbanNumber());
+        influencer.setSocialMedia(influencerProfileData.getSocialMedia());
+        influencer.setHeadTitle(influencerProfileData.getHeadTitle());
+        influencer.setDescription(influencerProfileData.getDescription());
+        influencer.setLanguages(influencerProfileData.getLanguages());
+        influencer.setCountries(influencerProfileData.getCountries());
+        influencer.setSectors(influencerProfileData.getSectors());
+        influencer.setStoryPrice(influencerProfileData.getStoryPrice());
+        influencer.setPostPrice(influencerProfileData.getPostPrice());
+        influencer.setHighlightPrice(influencerProfileData.getHighlightPrice());
+        influencer.setAddress(influencerProfileData.getAddress());
+        influencer.setCity(influencerProfileData.getCity());
+        influencer.setPostalCode(influencerProfileData.getPostalCode());
+
+        influencerRepository.save(influencer);
+    }
 }

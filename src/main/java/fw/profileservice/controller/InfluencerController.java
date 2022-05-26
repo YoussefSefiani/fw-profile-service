@@ -45,4 +45,13 @@ public class InfluencerController {
         influencerService.updateInfluencer(influencerId, influencer);
     }
 
+    @GetMapping(path = "profile/check/{userId}")
+    public boolean checkFirstTimeOnProfile(@PathVariable("userId") Long userId) {
+        return influencerService.checkFirstTimeOnProfile(userId);
+    }
+
+    @PutMapping(path = "profile/confirm/{userId}")
+    public void confirmProfile(@PathVariable("userId") Long userId, @RequestBody Influencer influencer) {
+        influencerService.confirmProfile(userId, influencer);
+    }
 }
