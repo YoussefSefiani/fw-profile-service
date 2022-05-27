@@ -30,6 +30,11 @@ public class InfluencerController {
         return influencerService.getInfluencer(influencerId);
     }
 
+    @GetMapping(path = "uuid/{userId}")
+    public Influencer getInfluencerByUserId(@PathVariable("userId") Long userId) {
+        return influencerService.getInfluencerByUserId(userId);
+    }
+
     @PostMapping
     public void registerInfluencer(@RequestBody RegisterRequest registerRequest) {
         influencerService.registerInfluencer(registerRequest);

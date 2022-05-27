@@ -34,6 +34,13 @@ public class InfluencerService {
                 );
     }
 
+    public Influencer getInfluencerByUserId(Long influencerId) {
+        return influencerRepository.findInfluencerByUserId(influencerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Influencer with id %s does not exist", influencerId))
+                );
+    }
+
     public void registerInfluencer(RegisterRequest registerRequest) {
         try {
             System.out.println("USER ID " + registerRequest.getUserId());
