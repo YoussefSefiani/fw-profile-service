@@ -34,10 +34,10 @@ public class InfluencerService {
                 );
     }
 
-    public Influencer getInfluencerByUserId(Long influencerId) {
-        return influencerRepository.findInfluencerByUserId(influencerId)
+    public Influencer getInfluencerByUserId(Long userId) {
+        return influencerRepository.findInfluencerByUserId(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        String.format("Influencer with id %s does not exist", influencerId))
+                        String.format("User with id %s does not exist", userId))
                 );
     }
 
