@@ -1,6 +1,7 @@
 package fw.profileservice.service;
 
 
+import fw.profileservice.feign.UserRestConsumer;
 import fw.profileservice.model.*;
 import fw.profileservice.repository.InfluencerRepository;
 
@@ -10,35 +11,41 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InfluencerService {
 
     private final InfluencerRepository influencerRepository;
+    private final UserRestConsumer userRestConsumer;
 
     @Autowired
-    public InfluencerService(InfluencerRepository influencerRepository) {
+    public InfluencerService(InfluencerRepository influencerRepository, UserRestConsumer userRestConsumer) {
         this.influencerRepository = influencerRepository;
+        this.userRestConsumer = userRestConsumer;
     }
 
-    public List<Influencer> getInfluencers() {
-        return influencerRepository.findAll();
+    public List<UserAndInfluencerWrapper> getInfluencers(String token) {
+        List<Influencer> influencers = influencerRepository.findAll();
+        List<User> users = userRestConsumer.getUsers(token);
+        List<UserAndInfluencerWrapper> mergedList = new ArrayList<>();
+        users.forEach(user -> {
+            Optional<Influencer> influencerOptional = influencers.stream().filter(e -> e.getUserId().equals(user.getId())).findFirst();
+            influencerOptional.ifPresent(influencer -> mergedList.add(new UserAndInfluencerWrapper(user, influencer)));
+        });
+        System.out.println(mergedList);
+        return null;
     }
 
-    public Influencer getInfluencer(Long influencerId) {
-
-        return influencerRepository.findById(influencerId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        String.format("Influencer with id %s does not exist", influencerId))
-                );
-    }
-
-    public Influencer getInfluencerByUserId(Long userId) {
-        return influencerRepository.findInfluencerByUserId(userId)
+    public UserAndInfluencerWrapper getInfluencerByUserId(Long userId, String token) {
+        Influencer influencer = influencerRepository.findInfluencerByUserId(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("User with id %s does not exist", userId))
                 );
+        User user = userRestConsumer.getUser(userId, token);
+        return new UserAndInfluencerWrapper(user, influencer);
     }
 
     public void registerInfluencer(RegisterRequest registerRequest) {
@@ -54,23 +61,23 @@ public class InfluencerService {
         }
     }
 
-    public void deleteInfluencer(Long influencerId) {
-        boolean exists = influencerRepository.existsById(influencerId);
+    public void deleteInfluencer(Long userId) {
+        boolean exists = influencerRepository.existsByUserId(userId);
 
         if (!exists) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    String.format("Influencer with id %s does not exist", influencerId));
+                    String.format("Influencer with id %s does not exist", userId));
         }
-        influencerRepository.deleteById(influencerId);
+        influencerRepository.deleteByUserId(userId);
     }
 
     @Transactional
-    public void updateInfluencer(Long influencerId, Influencer newInfluencer) {
-        Influencer influencer = influencerRepository.findById(influencerId)
+    public void updateInfluencer(Long userId, Influencer newInfluencer) {
+        Influencer influencer = influencerRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        String.format("Influencer with id %s does not exist", influencerId))
+                        String.format("Influencer with id %s does not exist", userId))
                 );
 
 //        String description = newInfluencer.getDescription();

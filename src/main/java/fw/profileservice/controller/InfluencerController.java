@@ -2,6 +2,7 @@ package fw.profileservice.controller;
 
 import fw.profileservice.model.Influencer;
 import fw.profileservice.model.RegisterRequest;
+import fw.profileservice.model.UserAndInfluencerWrapper;
 import fw.profileservice.service.InfluencerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +22,13 @@ public class InfluencerController {
 
 
     @GetMapping
-    public List<Influencer> getInfluencers() {
-        return influencerService.getInfluencers();
+    public List<UserAndInfluencerWrapper> getInfluencers(@RequestHeader("Authorization") String token) {
+        return influencerService.getInfluencers(token);
     }
 
-    @GetMapping(path = "{influencerId}")
-    public Influencer getInfluencer(@PathVariable("influencerId") Long influencerId) {
-        return influencerService.getInfluencer(influencerId);
-    }
-
-    @GetMapping(path = "uuid/{userId}")
-    public Influencer getInfluencerByUserId(@PathVariable("userId") Long userId) {
-        return influencerService.getInfluencerByUserId(userId);
+    @GetMapping(path = "{userId}")
+    public UserAndInfluencerWrapper getInfluencer(@PathVariable("userId") Long userId, @RequestHeader("Authorization") String token) {
+        return influencerService.getInfluencerByUserId(userId, token);
     }
 
     @PostMapping
@@ -40,14 +36,14 @@ public class InfluencerController {
         influencerService.registerInfluencer(registerRequest);
     }
 
-    @DeleteMapping(path = "{influencerId}")
-    public void deleteInfluencer(@PathVariable("influencerId") Long influencerId) {
-        influencerService.deleteInfluencer(influencerId);
+    @DeleteMapping(path = "{userId}")
+    public void deleteInfluencer(@PathVariable("userId") Long userId) {
+        influencerService.deleteInfluencer(userId);
     }
 
-    @PutMapping(path = "{influencerId}")
-    public void updateInfluencer(@PathVariable("influencerId") Long influencerId, @RequestBody Influencer influencer) {
-        influencerService.updateInfluencer(influencerId, influencer);
+    @PutMapping(path = "{userId}")
+    public void updateInfluencer(@PathVariable("userId") Long userId, @RequestBody Influencer influencer) {
+        influencerService.updateInfluencer(userId, influencer);
     }
 
     @GetMapping(path = "profile/check/{userId}")

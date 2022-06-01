@@ -5,6 +5,7 @@ import fw.profileservice.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,9 @@ public class BrandController {
 
     @GetMapping(path = "{brandId}")
     public Brand getBrand(@PathVariable("brandId") Long brandId) {
+        //TODO: implement getting brand by userId
         return brandService.getBrand(brandId);
+
     }
 
     @PostMapping
