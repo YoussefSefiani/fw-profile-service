@@ -36,7 +36,7 @@ public class InfluencerService {
             influencerOptional.ifPresent(influencer -> mergedList.add(new UserAndInfluencerWrapper(user, influencer)));
         });
         System.out.println(mergedList);
-        return null;
+        return mergedList;
     }
 
     public UserAndInfluencerWrapper getInfluencerByUserId(Long userId, String token) {

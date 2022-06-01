@@ -20,15 +20,13 @@ public class BrandController {
     }
 
     @GetMapping
-    public List<Brand> getBrands() {
-        return brandService.getBrands();
+    public List<UserAndBrandWrapper> getBrands(@RequestHeader("Authorization") String token) {
+        return brandService.getBrands(token);
     }
 
-    @GetMapping(path = "{brandId}")
-    public Brand getBrand(@PathVariable("brandId") Long brandId) {
-        //TODO: implement getting brand by userId
-        return brandService.getBrand(brandId);
-
+    @GetMapping(path = "{userId}")
+    public UserAndBrandWrapper getBrand(@PathVariable("userId") Long userId, @RequestHeader("Authorization") String token) {
+        return brandService.getBrandByUserId(userId, token);
     }
 
     @PostMapping
@@ -36,14 +34,14 @@ public class BrandController {
         brandService.registerBrand(registerRequest);
     }
 
-    @DeleteMapping(path = "{brandId}")
-    public void deleteBrand(@PathVariable("brandId") Long brandId) {
-        brandService.deleteBrand(brandId);
+    @DeleteMapping(path = "{userId}")
+    public void deleteBrand(@PathVariable("userId") Long userId) {
+        brandService.deleteBrand(userId);
     }
 
-    @PutMapping(path = "{brandId}")
-    public void updateBrand(@PathVariable("brandId") Long brandId, @RequestBody Brand brand) {
-       brandService.updateBrand(brandId, brand);
+    @PutMapping(path = "{userId}")
+    public void updateBrand(@PathVariable("userId") Long userId, @RequestBody Brand brand) {
+       brandService.updateBrand(userId, brand);
     }
 }
 
