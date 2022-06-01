@@ -31,11 +31,13 @@ public class ProfileService {
             if(influencer.isPresent()) {
                 return new UserAndInfluencerWrapper(user, influencer.get());
             }
+        } else {
             Optional<Brand> brand = brandRepository.findBrandByUserId(userId);
             if(brand.isPresent()) {
                 return new UserAndBrandWrapper(user, brand.get());
             }
         }
+
         return null;
     }
 
