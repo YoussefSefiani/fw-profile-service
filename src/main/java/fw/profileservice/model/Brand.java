@@ -14,20 +14,22 @@ import java.util.List;
 @NoArgsConstructor
 public class Brand {
 
-    public Brand(Long id, Long userId) {
-        this.id = id;
-        this.userId = userId;
+    public Brand(/*Long id,*/ Long userIdBrand) {
+      //  this.id = id;
+        this.userIdBrand = userIdBrand;
     }
 
+//    @Id
+//    @GeneratedValue(
+//            strategy = GenerationType.AUTO
+//    )
+    //private Long id;
+
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.AUTO
-    )
-    private Long id;
+    @Column(name = "user_id")
+    private Long userIdBrand;
 
-    private Long userId;
-
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id_brand")
     @OneToMany(cascade = CascadeType.ALL)
     private List<SocialMedia> socialMedia;
 
@@ -35,15 +37,15 @@ public class Brand {
 
     private String description;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id_brand")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Language> languages;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id_brand")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Country> countries;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id_brand")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Sector> sectors;
 

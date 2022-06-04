@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BrandRepository extends JpaRepository<Brand, Long> {
-    Optional<Brand> findBrandByUserId(Long userId);
-    boolean existsByUserId(Long userId);
-    void deleteByUserId(Long userId);
+    Optional<Brand> findBrandByUserIdBrand(Long userId);
+    boolean existsByUserIdBrand(Long userId);
+    void deleteByUserIdBrand(Long userId);
 }

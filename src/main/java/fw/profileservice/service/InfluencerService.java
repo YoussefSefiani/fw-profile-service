@@ -32,7 +32,7 @@ public class InfluencerService {
         List<User> users = userRestConsumer.getUsers(token);
         List<UserAndInfluencerWrapper> mergedList = new ArrayList<>();
         users.forEach(user -> {
-            Optional<Influencer> influencerOptional = influencers.stream().filter(e -> e.getUserId().equals(user.getId())).findFirst();
+            Optional<Influencer> influencerOptional = influencers.stream().filter(e -> e.getUserIdInfluencer().equals(user.getId())).findFirst();
             influencerOptional.ifPresent(influencer -> mergedList.add(new UserAndInfluencerWrapper(user, influencer)));
         });
         System.out.println(mergedList);
@@ -40,7 +40,7 @@ public class InfluencerService {
     }
 
     public UserAndInfluencerWrapper getInfluencerByUserId(Long userId, String token) {
-        Influencer influencer = influencerRepository.findInfluencerByUserId(userId)
+        Influencer influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("User with id %s does not exist", userId))
                 );
@@ -52,7 +52,7 @@ public class InfluencerService {
         try {
             System.out.println("USER ID " + registerRequest.getUserId());
             Influencer influencer = new Influencer(
-                    (Long) null,
+                  /*  (Long) null, */
                     registerRequest.getUserId()
             );
             influencerRepository.save(influencer);
@@ -62,14 +62,14 @@ public class InfluencerService {
     }
 
     public void deleteInfluencer(Long userId) {
-        boolean exists = influencerRepository.existsByUserId(userId);
+        boolean exists = influencerRepository.existsByUserIdInfluencer(userId);
 
         if (!exists) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     String.format("Influencer with id %s does not exist", userId));
         }
-        influencerRepository.deleteByUserId(userId);
+        influencerRepository.deleteByUserIdInfluencer(userId);
     }
 
     @Transactional
@@ -103,7 +103,7 @@ public class InfluencerService {
     }
 
     public boolean checkFirstTimeOnProfile(Long userId) {
-        Influencer influencer = influencerRepository.findInfluencerByUserId(userId)
+        Influencer influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Influencer with id %s does not exist", userId))
                 );
@@ -111,7 +111,7 @@ public class InfluencerService {
     }
 
     public void confirmProfile(Long userId, Influencer influencerProfileData) {
-        Influencer influencer = influencerRepository.findInfluencerByUserId(userId)
+        Influencer influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Influencer with id %s does not exist", userId))
                 );

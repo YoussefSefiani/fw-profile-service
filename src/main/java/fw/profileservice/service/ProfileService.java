@@ -27,12 +27,12 @@ public class ProfileService {
         User user = userRestConsumer.getUser(userId, token);
 
         if(user.getUserType().equals(UserType.INFLUENCER)) {
-            Optional<Influencer> influencer = influencerRepository.findInfluencerByUserId(userId);
+            Optional<Influencer> influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId);
             if(influencer.isPresent()) {
                 return new UserAndInfluencerWrapper(user, influencer.get());
             }
         } else {
-            Optional<Brand> brand = brandRepository.findBrandByUserId(userId);
+            Optional<Brand> brand = brandRepository.findBrandByUserIdBrand(userId);
             if(brand.isPresent()) {
                 return new UserAndBrandWrapper(user, brand.get());
             }

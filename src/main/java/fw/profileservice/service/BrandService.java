@@ -30,7 +30,7 @@ public class BrandService {
         List<User> users = userRestConsumer.getUsers(token);
         List<UserAndBrandWrapper> mergedList = new ArrayList<>();
         users.forEach(user -> {
-            Optional<Brand> brandOptional = brands.stream().filter(e -> e.getUserId().equals(user.getId())).findFirst();
+            Optional<Brand> brandOptional = brands.stream().filter(e -> e.getUserIdBrand().equals(user.getId())).findFirst();
             brandOptional.ifPresent(brand -> mergedList.add(new UserAndBrandWrapper(user, brand)));
         });
         System.out.println(mergedList);
@@ -39,7 +39,7 @@ public class BrandService {
 
     public UserAndBrandWrapper getBrandByUserId(Long userId, String token) {
 
-        Brand brand = brandRepository.findBrandByUserId(userId)
+        Brand brand = brandRepository.findBrandByUserIdBrand(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Brand with id %s does not exist", userId))
                 );
@@ -52,7 +52,7 @@ public class BrandService {
         try {
             System.out.println("USER ID " + registerRequest.getUserId());
             Brand brand = new Brand(
-                    (Long) null,
+                   /* (Long) null,*/
                     registerRequest.getUserId()
             );
             brandRepository.save(brand);
@@ -62,14 +62,14 @@ public class BrandService {
     }
 
     public void deleteBrand(Long userId) {
-        boolean exists = brandRepository.existsByUserId(userId);
+        boolean exists = brandRepository.existsByUserIdBrand(userId);
 
         if (!exists) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     String.format("Brand with id %s does not exist", userId));
         }
-        brandRepository.deleteByUserId(userId);
+        brandRepository.deleteByUserIdBrand(userId);
     }
 
     @Transactional

@@ -14,22 +14,24 @@ import java.util.List;
 @NoArgsConstructor
 public class Influencer {
 
-    public Influencer(Long id, Long userId) {
-        this.id = id;
-        this.userId = userId;
+    public Influencer(/*Long id,*/ Long userIdInfluencer) {
+    //    this.id = id;
+        this.userIdInfluencer = userIdInfluencer;
     }
 
-    @Id
-    @GeneratedValue(
-            strategy = GenerationType.AUTO
-    )
-    private Long id;
+//    @Id
+//    @GeneratedValue(
+//            strategy = GenerationType.AUTO
+//    )
+//    private Long id;
 
-    private Long userId;
+    @Id
+    @Column(name = "user_id")
+    private Long userIdInfluencer;
 
     private String ibanNumber;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id_influencer")
     @OneToMany(cascade = CascadeType.ALL)
     private List<SocialMedia> socialMedia;
 
@@ -37,15 +39,15 @@ public class Influencer {
 
     private String description;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id_influencer")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Language> languages;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id_influencer")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Country> countries;
 
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id_influencer")
     @OneToMany(cascade = CascadeType.ALL)
     private List<Sector> sectors;
 
