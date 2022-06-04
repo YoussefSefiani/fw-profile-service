@@ -52,7 +52,6 @@ public class InfluencerService {
         try {
             System.out.println("USER ID " + registerRequest.getUserId());
             Influencer influencer = new Influencer(
-                  /*  (Long) null, */
                     registerRequest.getUserId()
             );
             influencerRepository.save(influencer);

@@ -14,16 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 public class Influencer {
 
-    public Influencer(/*Long id,*/ Long userIdInfluencer) {
-    //    this.id = id;
+    public Influencer(Long userIdInfluencer) {
         this.userIdInfluencer = userIdInfluencer;
     }
-
-//    @Id
-//    @GeneratedValue(
-//            strategy = GenerationType.AUTO
-//    )
-//    private Long id;
 
     @Id
     @Column(name = "user_id")

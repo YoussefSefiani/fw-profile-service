@@ -52,7 +52,6 @@ public class BrandService {
         try {
             System.out.println("USER ID " + registerRequest.getUserId());
             Brand brand = new Brand(
-                   /* (Long) null,*/
                     registerRequest.getUserId()
             );
             brandRepository.save(brand);

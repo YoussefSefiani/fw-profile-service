@@ -14,16 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 public class Brand {
 
-    public Brand(/*Long id,*/ Long userIdBrand) {
-      //  this.id = id;
+    public Brand(Long userIdBrand) {
         this.userIdBrand = userIdBrand;
     }
-
-//    @Id
-//    @GeneratedValue(
-//            strategy = GenerationType.AUTO
-//    )
-    //private Long id;
 
     @Id
     @Column(name = "user_id")
