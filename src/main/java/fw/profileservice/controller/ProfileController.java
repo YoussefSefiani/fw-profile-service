@@ -1,5 +1,7 @@
 package fw.profileservice.controller;
 
+import fw.profileservice.model.Influencer;
+import fw.profileservice.model.UserAndInfluencerWrapper;
 import fw.profileservice.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,4 +24,8 @@ public class ProfileController {
         return profileService.getProfile(userId, token);
     }
 
+    @PutMapping(path = "influencer/{userId}")
+    public void updateInfluencerProfile(@PathVariable("userId") Long userId, @RequestHeader("Authorization") String token, @RequestBody UserAndInfluencerWrapper newData) {
+        profileService.updateInfluencerProfile(userId, token, newData);
+    }
 }
