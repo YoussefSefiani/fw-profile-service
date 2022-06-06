@@ -56,6 +56,7 @@ public class InfluencerService {
             );
             influencerRepository.save(influencer);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Error during register request" );
         }
     }
