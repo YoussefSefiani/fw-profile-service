@@ -61,7 +61,6 @@ public class Influencer {
         this.storyPrice = influencer.getStoryPrice();
         this.postPrice = influencer.getPostPrice();
         this.highlightPrice = influencer.getHighlightPrice();
-        this.socialMedia = influencer.getSocialMedia();
         this.countries = influencer.getCountries();
     }
 
