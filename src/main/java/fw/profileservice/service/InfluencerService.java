@@ -83,14 +83,6 @@ public class InfluencerService {
         influencerRepository.save(influencer);
     }
 
-    public boolean checkFirstTimeOnProfile(Long userId) {
-        Influencer influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        String.format("Influencer with id %s does not exist", userId))
-                );
-        return influencer.getIbanNumber() == null;
-    }
-
     public void confirmProfile(Long userId, Influencer influencerProfileData) {
         Influencer influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,

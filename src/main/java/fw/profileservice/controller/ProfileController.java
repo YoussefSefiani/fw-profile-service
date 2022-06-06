@@ -28,4 +28,9 @@ public class ProfileController {
     public void updateInfluencerProfile(@PathVariable("userId") Long userId, @RequestHeader("Authorization") String token, @RequestBody UserAndInfluencerWrapper newData) {
         profileService.updateInfluencerProfile(userId, token, newData);
     }
+
+    @GetMapping(path = "check/{userId}")
+    public boolean checkFirstTimeOnProfileInfluencer(@PathVariable("userId") Long userId) {
+        return profileService.checkFirstTimeOnProfileInfluencer(userId);
+    }
 }
