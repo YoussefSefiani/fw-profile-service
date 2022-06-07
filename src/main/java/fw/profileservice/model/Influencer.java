@@ -30,6 +30,8 @@ public class Influencer {
 
     private String headTitle;
 
+    @Lob
+    @Column(length = 2000)
     private String description;
 
     @JoinColumn(name = "user_id_influencer")

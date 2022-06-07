@@ -1,6 +1,6 @@
 package fw.profileservice.service;
 
-import fw.profileservice.feign.UserRestConsumer;
+import fw.profileservice.model.feign.UserRestConsumer;
 import fw.profileservice.model.*;
 import fw.profileservice.repository.BrandRepository;
 import fw.profileservice.repository.InfluencerRepository;
@@ -33,12 +33,12 @@ public class ProfileService {
         User user = userRestConsumer.getUser(userId, token);
 
         if (user.getUserType().equals(UserType.INFLUENCER)) {
-            Optional<Influencer> influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId);
+            Optional<Influencer> influencer = influencerRepository.findByUserIdInfluencer(userId);
             if (influencer.isPresent()) {
                 return new UserAndInfluencerWrapper(user, influencer.get());
             }
         } else {
-            Optional<Brand> brand = brandRepository.findBrandByUserIdBrand(userId);
+            Optional<Brand> brand = brandRepository.findByUserIdBrand(userId);
             if (brand.isPresent()) {
                 return new UserAndBrandWrapper(user, brand.get());
             }
@@ -47,7 +47,7 @@ public class ProfileService {
     }
 
     public boolean checkFirstTimeOnProfileInfluencer(Long userId) {
-        Influencer influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId)
+        Influencer influencer = influencerRepository.findByUserIdInfluencer(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Influencer with id %s does not exist", userId))
                 );

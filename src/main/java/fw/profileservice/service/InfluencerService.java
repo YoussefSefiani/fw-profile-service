@@ -1,9 +1,9 @@
 package fw.profileservice.service;
 
 
-import fw.profileservice.feign.UserRestConsumer;
+import fw.profileservice.model.feign.UserRestConsumer;
 import fw.profileservice.model.*;
-import fw.profileservice.repository.InfluencerRepository;
+import fw.profileservice.repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +19,21 @@ import java.util.Optional;
 public class InfluencerService {
 
     private final InfluencerRepository influencerRepository;
+    private final CountryRepository countryRepository;
+    private final LanguageRepository languageRepository;
+    private final SectorRepository sectorRepository;
+    private final SocialMediaRepository socialMediaRepository;
     private final UserRestConsumer userRestConsumer;
 
     @Autowired
-    public InfluencerService(InfluencerRepository influencerRepository, UserRestConsumer userRestConsumer) {
+    public InfluencerService(InfluencerRepository influencerRepository, CountryRepository countryRepository,
+                             LanguageRepository languageRepository, SectorRepository sectorRepository,
+                             SocialMediaRepository socialMediaRepository, UserRestConsumer userRestConsumer) {
         this.influencerRepository = influencerRepository;
+        this.countryRepository = countryRepository;
+        this.languageRepository = languageRepository;
+        this.sectorRepository = sectorRepository;
+        this.socialMediaRepository = socialMediaRepository;
         this.userRestConsumer = userRestConsumer;
     }
 
@@ -40,7 +50,7 @@ public class InfluencerService {
     }
 
     public UserAndInfluencerWrapper getInfluencerByUserId(Long userId, String token) {
-        Influencer influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId)
+        Influencer influencer = influencerRepository.findByUserIdInfluencer(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("User with id %s does not exist", userId))
                 );
@@ -74,21 +84,30 @@ public class InfluencerService {
 
     @Transactional
     public void updateInfluencer(Long userId, Influencer newInfluencer) {
-        Influencer influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId)
+        Influencer influencer = influencerRepository.findByUserIdInfluencer(userId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         String.format("Influencer with id %s does not exist", userId))
                 );
+
+        clearExistingProfileData(userId);
         influencer.updateInfluencer(newInfluencer);
         influencerRepository.save(influencer);
     }
 
     public void confirmProfile(Long userId, Influencer influencerProfileData) {
-        Influencer influencer = influencerRepository.findInfluencerByUserIdInfluencer(userId)
+        Influencer influencer = influencerRepository.findByUserIdInfluencer(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Influencer with id %s does not exist", userId))
                 );
         influencer.updateInfluencer(influencerProfileData);
         influencerRepository.save(influencer);
+    }
+
+    public void clearExistingProfileData(Long userId) {
+        socialMediaRepository.deleteByUserIdInfluencer(userId);
+        sectorRepository.deleteByUserIdInfluencer(userId);
+        languageRepository.deleteByUserIdInfluencer(userId);
+        countryRepository.deleteByUserIdInfluencer(userId);
     }
 }

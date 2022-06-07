@@ -1,6 +1,6 @@
 package fw.profileservice.service;
 
-import fw.profileservice.feign.UserRestConsumer;
+import fw.profileservice.model.feign.UserRestConsumer;
 import fw.profileservice.model.*;
 import fw.profileservice.repository.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class BrandService {
 
     public UserAndBrandWrapper getBrandByUserId(Long userId, String token) {
 
-        Brand brand = brandRepository.findBrandByUserIdBrand(userId)
+        Brand brand = brandRepository.findByUserIdBrand(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Brand with id %s does not exist", userId))
                 );

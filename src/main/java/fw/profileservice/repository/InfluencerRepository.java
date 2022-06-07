@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface InfluencerRepository extends JpaRepository<Influencer, Long> {
 //   Optional<Influencer> findInfluencerByUsername(String username);
-    Optional<Influencer> findInfluencerByUserIdInfluencer(Long userId);
+    Optional<Influencer> findByUserIdInfluencer(Long userId);
     boolean existsByUserIdInfluencer(Long userId);
     void deleteByUserIdInfluencer(Long userId);
 }
