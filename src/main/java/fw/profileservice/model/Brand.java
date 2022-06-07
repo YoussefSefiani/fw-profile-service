@@ -28,7 +28,6 @@ public class Brand {
 
     private String headTitle;
 
-    @Lob
     @Column(length = 2000)
     private String description;
 
