@@ -46,4 +46,12 @@ public class Brand {
     public Brand(RegisterRequest registerRequest, Long userId) {
     }
 
+    public void updateBrand(Brand newBrand) {
+        this.socialMedia = newBrand.getSocialMedia();
+        this.headTitle = newBrand.getHeadTitle();
+        this.description = newBrand.getDescription();
+        this.languages = newBrand.getLanguages();
+        this.countries = newBrand.getCountries();
+        this.sectors = newBrand.getSectors();
+    }
 }

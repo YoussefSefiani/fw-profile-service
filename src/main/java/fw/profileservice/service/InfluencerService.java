@@ -1,7 +1,7 @@
 package fw.profileservice.service;
 
 
-import fw.profileservice.model.feign.UserRestConsumer;
+import fw.profileservice.feign.UserRestConsumer;
 import fw.profileservice.model.*;
 import fw.profileservice.repository.*;
 

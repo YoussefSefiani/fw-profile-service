@@ -1,8 +1,8 @@
 package fw.profileservice.service;
 
-import fw.profileservice.model.feign.UserRestConsumer;
+import fw.profileservice.feign.UserRestConsumer;
 import fw.profileservice.model.*;
-import fw.profileservice.repository.BrandRepository;
+import fw.profileservice.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,11 +18,19 @@ public class BrandService {
 
     private final BrandRepository brandRepository;
     private final UserRestConsumer userRestConsumer;
+    private final CountryRepository countryRepository;
+    private final LanguageRepository languageRepository;
+    private final SectorRepository sectorRepository;
+    private final SocialMediaRepository socialMediaRepository;
 
     @Autowired
-    public BrandService(BrandRepository brandRepository, UserRestConsumer userRestConsumer){
+    public BrandService(BrandRepository brandRepository, UserRestConsumer userRestConsumer, CountryRepository countryRepository, LanguageRepository languageRepository, SectorRepository sectorRepository, SocialMediaRepository socialMediaRepository){
         this.brandRepository = brandRepository;
         this.userRestConsumer = userRestConsumer;
+        this.countryRepository = countryRepository;
+        this.languageRepository = languageRepository;
+        this.sectorRepository = sectorRepository;
+        this.socialMediaRepository = socialMediaRepository;
     }
 
     public List<UserAndBrandWrapper> getBrands(String token) {
@@ -72,33 +80,23 @@ public class BrandService {
     }
 
     @Transactional
-    public void updateBrand(Long brandId, Brand newBrand) {
-        Brand brand = brandRepository.findById(brandId)
-                .orElseThrow(() -> new IllegalStateException(
-                        "brand with id " + brandId + "does not exist"
-                ));
+    public void updateBrand(Long userId, Brand newBrand) {
+        Brand brand = brandRepository.findByUserIdBrand(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("Brand with id %s does not exist", userId))
+                );
 
-//        String description = newInfluencer.getDescription();
-//        String headTitle = newInfluencer.getHeadTitle();
-//        String ibanNumber = newInfluencer.getIbanNumber();
-//        String offers = newInfluencer.getOffers();
-//        String partnerships = newInfluencer.getPartnerships();
-//
-//        if (description != null && description.length() > 0 && !Objects.equals(influencer.getDescription(), description))
-//            influencer.setDescription(description);
-//
-//        if (headTitle != null && headTitle.length() > 0 && !Objects.equals(influencer.getHeadTitle(), headTitle))
-//            influencer.setDescription(description);
-//
-//        if (ibanNumber != null && ibanNumber.length() > 0 && !Objects.equals(influencer.getIbanNumber(), ibanNumber))
-//            influencer.setDescription(description);
-//
-//        if (offers != null && offers.length() > 0 && !Objects.equals(influencer.getOffers(), offers))
-//            influencer.setDescription(description);
-//
-//        if (partnerships != null && partnerships.length() > 0 && !Objects.equals(influencer.getPartnerships(), partnerships))
-//            influencer.setDescription(description);
+        clearExistingProfileData(userId);
+        brand.updateBrand(newBrand);
+        brandRepository.save(brand);
 
+    }
 
+    public void clearExistingProfileData(Long userId) {
+        socialMediaRepository.deleteByUserIdBrand(userId);
+        sectorRepository.deleteByUserIdBrand(userId);
+        languageRepository.deleteByUserIdBrand(userId);
+        countryRepository.deleteByUserIdBrand(userId);
     }
 }

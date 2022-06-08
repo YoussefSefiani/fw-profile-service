@@ -1,6 +1,6 @@
 package fw.profileservice.service;
 
-import fw.profileservice.model.feign.UserRestConsumer;
+import fw.profileservice.feign.UserRestConsumer;
 import fw.profileservice.model.*;
 import fw.profileservice.repository.BrandRepository;
 import fw.profileservice.repository.InfluencerRepository;
@@ -60,4 +60,8 @@ public class ProfileService {
         userRestConsumer.updateUser(userId, token, newData.getUser());
     }
 
+    public void updateBrandProfile(Long userId, String token, UserAndBrandWrapper newData) {
+        brandService.updateBrand(userId, newData.getBrand());
+        userRestConsumer.updateUser(userId, token, newData.getUser());
+    }
 }

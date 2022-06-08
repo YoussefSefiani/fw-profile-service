@@ -1,6 +1,7 @@
 package fw.profileservice.controller;
 
 import fw.profileservice.model.Influencer;
+import fw.profileservice.model.UserAndBrandWrapper;
 import fw.profileservice.model.UserAndInfluencerWrapper;
 import fw.profileservice.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class ProfileController {
     @PutMapping(path = "influencer/{userId}")
     public void updateInfluencerProfile(@PathVariable("userId") Long userId, @RequestHeader("Authorization") String token, @RequestBody UserAndInfluencerWrapper newData) {
         profileService.updateInfluencerProfile(userId, token, newData);
+    }
+
+    @PutMapping(path = "brand/{userId}")
+    public void updateBrandProfile(@PathVariable("userId") Long userId, @RequestHeader("Authorization") String token, @RequestBody UserAndBrandWrapper newData) {
+        profileService.updateBrandProfile(userId, token, newData);
     }
 
     @GetMapping(path = "check/{userId}")

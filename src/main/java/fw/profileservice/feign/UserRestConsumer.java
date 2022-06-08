@@ -1,4 +1,4 @@
-package fw.profileservice.model.feign;
+package fw.profileservice.feign;
 
 import feign.Headers;
 import feign.Param;
