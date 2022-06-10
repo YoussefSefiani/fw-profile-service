@@ -45,6 +45,8 @@ public class Influencer {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Sector> sectors;
 
+    private int followers;
+
     private int storyPrice;
     private int postPrice;
     private int highlightPrice;
@@ -63,6 +65,7 @@ public class Influencer {
         this.postPrice = influencer.getPostPrice();
         this.highlightPrice = influencer.getHighlightPrice();
         this.countries = influencer.getCountries();
+        this.followers = influencer.getFollowers();
     }
 
 }
