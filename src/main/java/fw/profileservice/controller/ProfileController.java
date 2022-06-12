@@ -19,6 +19,11 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
+    @GetMapping(path = "ping")
+    public String ping() {
+        return "pong";
+    }
+
 
     @GetMapping(path = "{userId}")
     public Object getProfile(@PathVariable("userId") Long userId, @RequestHeader("Authorization") String token) {
